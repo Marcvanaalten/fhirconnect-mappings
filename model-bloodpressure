@@ -1,0 +1,567 @@
+{
+	"id": "8562d7b6-52d0-4fac-8b81-cca421fd5782",
+	"grammar": "FHIRConnect/v1.0.0",
+	"type": "model",
+	"metadata": {
+		"name": "OBSERVATION.blood_pressure.v2",
+		"version": "0.0.1-alpha"
+	},
+	"spec": {
+		"system": "FHIR",
+		"version": "R4",
+		"openEhrConfig": {
+			"archetype": "openEHR-EHR-OBSERVATION.blood_pressure.v2"
+		},
+		"fhirConfig": {
+			"structureDefinition": "http://hl7.org/fhir/StructureDefinition/Observation",
+			"multiple": false
+		}
+	},
+	"preprocessor": {
+		"fhirCondition": {
+			"targetRoot": "$resource",
+			"targetAttribute": "code.coding.code",
+			"targetAttributes": [
+				"code.coding.code"
+			],
+			"operator": "one of",
+			"criteria": "85354-9",
+			"criterias": [
+				"85354-9"
+			]
+		}
+	},
+	"mappings": [
+		{
+			"name": "id",
+			"with": {
+				"fhir": "$resource",
+				"openehr": "$archetype"
+			},
+			"manual": [
+				{
+					"name": "id",
+					"fhir": [
+						{
+							"value": "nl-core-BloodPressure-01",
+							"path": "id"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "meta",
+			"with": {
+				"fhir": "$resource.meta",
+				"openehr": "$archetype"
+			},
+			"manual": [
+				{
+					"name": "profile",
+					"fhir": [
+						{
+							"value": "http://nictiz.nl/fhir/StructureDefinition/nl-core-BloodPressure",
+							"path": "profile"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "fhirStatus",
+			"with": {
+				"fhir": "$resource",
+				"openehr": "$archetype"
+			},
+			"manual": [
+				{
+					"name": "status",
+					"fhir": [
+						{
+							"value": "final",
+							"path": "status"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "patient",
+			"with": {
+				"fhir": "$resource.subject.reference",
+				"openehr": "$openEhrContext.$ehr",
+				"type": "STRING"
+			}
+		},
+		{
+			"name": "method",
+			"with": {
+				"fhir": "$resource.method",
+				"openehr": "$archetype/protocol[at0011]/items[at1035]",
+				"type": "CODEABLECONCEPT"
+			}
+		},
+		{
+			"name": "manualLoincCode",
+			"with": {
+				"fhir": "$resource.code.coding",
+				"openehr": "$archetype"
+			},
+			"manual": [
+				{
+					"name": "coding",
+					"fhir": [
+						{
+							"value": "85354-9",
+							"path": "code"
+						},
+						{
+							"value": "http://loinc.org",
+							"path": "system"
+						},
+						{
+							"value": "Blood pressure panel with all children optional",
+							"path": "display"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "observationCategory",
+			"with": {
+				"fhir": "$resource.category.coding",
+				"openehr": "$archetype"
+			},
+			"manual": [
+				{
+					"name": "category",
+					"fhir": [
+						{
+							"value": "http://terminology.hl7.org/CodeSystem/observation-category",
+							"path": "system"
+						},
+						{
+							"value": "vital-signs",
+							"path": "code"
+						},
+						{
+							"value": "Vital Signs",
+							"path": "display"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "bodySite",
+			"with": {
+				"fhir": "$resource.bodySite",
+				"openehr": "$archetype/protocol[at0011]/items[at0014]",
+				"type": "CODEABLECONCEPT"
+			}
+		},
+		{
+			"name": "EventComponentparent",
+			"with": {
+				"fhir": "$resource",
+				"openehr": "$archetype/data[at0001]/events[at0006]"
+			},
+			"followedBy": {
+				"mappings": [
+					{
+						"name": "dateTime",
+						"with": {
+							"fhir": "$resource.effective",
+							"openehr": "$archetype/data[at0001]/events[at0006]/time",
+							"type": "DATETIME"
+						}
+					},
+					{
+						"name": "position",
+						"with": {
+							"fhir": "$resource.extension.value",
+							"openehr": "$archetype/data[at0001]/events[at0006]/state[at0007]/items[at0008]",
+							"type": "CODEABLECONCEPT"
+						},
+						"fhirCondition": {
+							"targetRoot": "$resource.extension",
+							"targetAttribute": "url",
+							"targetAttributes": [
+								"url"
+							],
+							"operator": "one of",
+							"criteria": "http://hl7.org/fhir/StructureDefinition/observation-bodyPosition",
+							"criterias": [
+								"http://hl7.org/fhir/StructureDefinition/observation-bodyPosition"
+							]
+						}
+					},
+					{
+						"name": "componentsIntoSameEvent",
+						"with": {
+							"fhir": "$resource.component",
+							"openehr": "$openehrRoot"
+						},
+						"followedBy": {
+							"mappings": [
+								{
+									"name": "systolicParent",
+									"with": {
+										"fhir": "$fhirRoot",
+										"openehr": "$openehrRoot"
+									},
+									"fhirCondition": {
+										"targetRoot": "$fhirRoot",
+										"targetAttribute": "code.coding.code",
+										"targetAttributes": [
+											"code.coding.code"
+										],
+										"operator": "one of",
+										"criteria": "8480-6",
+										"criterias": [
+											"8480-6"
+										]
+									},
+									"followedBy": {
+										"mappings": [
+											{
+												"name": "systolic",
+												"with": {
+													"fhir": "value",
+													"openehr": "data[at0003]/items[at0004]",
+													"type": "QUANTITY"
+												}
+											},
+											{
+												"name": "harcdcodingComponentCodeSystolic",
+												"with": {
+													"fhir": "code.coding",
+													"openehr": "$openehrRoot"
+												},
+												"manual": [
+													{
+														"name": "coding",
+														"fhir": [
+															{
+																"value": "8480-6",
+																"path": "code"
+															},
+															{
+																"value": "http://loinc.org",
+																"path": "system"
+															},
+															{
+																"value": "Systolic blood pressure",
+																"path": "display"
+															}
+														]
+													}
+												]
+											},
+											{
+												"name": "harcdcodingComponentQuantitySystolic",
+												"with": {
+													"fhir": "value",
+													"openehr": "$openehrRoot"
+												},
+												"manual": [
+													{
+														"name": "coding",
+														"fhir": [
+															{
+																"value": "http://unitsofmeasure.org",
+																"path": "system"
+															},
+															{
+																"value": "mm[Hg]",
+																"path": "code"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								},
+								{
+									"name": "diastolicParent",
+									"with": {
+										"fhir": "$fhirRoot",
+										"openehr": "$openehrRoot"
+									},
+									"fhirCondition": {
+										"targetRoot": "$fhirRoot",
+										"targetAttribute": "code.coding.code",
+										"targetAttributes": [
+											"code.coding.code"
+										],
+										"operator": "one of",
+										"criteria": "8462-4",
+										"criterias": [
+											"8462-4"
+										]
+									},
+									"followedBy": {
+										"mappings": [
+											{
+												"name": "diastolic",
+												"with": {
+													"fhir": "value",
+													"openehr": "data[at0003]/items[at0005]",
+													"type": "QUANTITY"
+												}
+											},
+											{
+												"name": "harcdcodingComponentCodeDiastolic",
+												"with": {
+													"fhir": "code.coding",
+													"openehr": "$openehrRoot"
+												},
+												"manual": [
+													{
+														"name": "coding",
+														"fhir": [
+															{
+																"value": "8462-4",
+																"path": "code"
+															},
+															{
+																"value": "http://loinc.org",
+																"path": "system"
+															},
+															{
+																"value": "Diastolic blood pressure",
+																"path": "display"
+															}
+														]
+													}
+												]
+											},
+											{
+												"name": "harcdcodingComponentQuantityDiastolic",
+												"with": {
+													"fhir": "value",
+													"openehr": "$openehrRoot"
+												},
+												"manual": [
+													{
+														"name": "coding",
+														"fhir": [
+															{
+																"value": "http://unitsofmeasure.org",
+																"path": "system"
+															},
+															{
+																"value": "mm[Hg]",
+																"path": "code"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								},
+								{
+									"name": "averageBloodPressureParent",
+									"with": {
+										"fhir": "$fhirRoot",
+										"openehr": "$openehrRoot"
+									},
+									"fhirCondition": {
+										"targetRoot": "$fhirRoot",
+										"targetAttribute": "code.coding.code",
+										"targetAttributes": [
+											"code.coding.code"
+										],
+										"operator": "one of",
+										"criteria": "6797001",
+										"criterias": [
+											"6797001"
+										]
+									},
+									"followedBy": {
+										"mappings": [
+											{
+												"name": "averageBloodPressure",
+												"with": {
+													"fhir": "value",
+													"openehr": "data[at0003]/items[at1006]",
+													"type": "QUANTITY"
+												}
+											},
+											{
+												"name": "harcdcodingComponentCodeAverageBloodPressure",
+												"with": {
+													"fhir": "code.coding",
+													"openehr": "$openehrRoot"
+												},
+												"manual": [
+													{
+														"name": "coding",
+														"fhir": [
+															{
+																"value": "6797001",
+																"path": "code"
+															},
+															{
+																"value": "http://snomed.info/sct",
+																"path": "system"
+															},
+															{
+																"value": "gemiddelde bloeddruk (waarneembare entiteit)",
+																"path": "display"
+															}
+														]
+													}
+												]
+											},
+											{
+												"name": "harcdcodingComponentQuantityAverageBloodPressure",
+												"with": {
+													"fhir": "value",
+													"openehr": "$openehrRoot"
+												},
+												"manual": [
+													{
+														"name": "coding",
+														"fhir": [
+															{
+																"value": "http://unitsofmeasure.org",
+																"path": "system"
+															},
+															{
+																"value": "mm[Hg]",
+																"path": "code"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"name": "cuffTypeParent",
+			"with": {
+				"fhir": "$resource.component",
+				"openehr": "$archetype/protocol[at0011]/items[at0013]"
+			},
+			"fhirCondition": {
+				"targetRoot": "$resource.component",
+				"targetAttribute": "code.coding.code",
+				"targetAttributes": [
+					"code.coding.code"
+				],
+				"operator": "one of",
+				"criteria": "70665002",
+				"criterias": [
+					"70665002"
+				]
+			},
+			"followedBy": {
+				"mappings": [
+					{
+						"name": "cufftype",
+						"with": {
+							"fhir": "value",
+							"openehr": "$openehrRoot",
+							"type": "CODEABLECONCEPT"
+						}
+					},
+					{
+						"name": "harcdcodingComponentCodeCuffType",
+						"with": {
+							"fhir": "code.coding",
+							"openehr": "$openehrRoot"
+						},
+						"manual": [
+							{
+								"name": "coding",
+								"fhir": [
+									{
+										"value": "70665002",
+										"path": "code"
+									},
+									{
+										"value": "http://snomed.info/sct",
+										"path": "system"
+									},
+									{
+										"value": "Blood pressure cuff",
+										"path": "display"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"name": "diastolicEndpointParent",
+			"with": {
+				"fhir": "$resource.component",
+				"openehr": "$archetype/protocol[at0011]/items[at1010]"
+			},
+			"fhirCondition": {
+				"targetRoot": "$resource.component",
+				"targetAttribute": "code.coding.code",
+				"targetAttributes": [
+					"code.coding.code"
+				],
+				"operator": "one of",
+				"criteria": "85549003",
+				"criterias": [
+					"85549003"
+				]
+			},
+			"followedBy": {
+				"mappings": [
+					{
+						"name": "diastolicEndpoint",
+						"with": {
+							"fhir": "value",
+							"openehr": "$openehrRoot",
+							"type": "CODEABLECONCEPT"
+						}
+					},
+					{
+						"name": "harcdcodingComponentCodeDiastolicEndpoint",
+						"with": {
+							"fhir": "code.coding",
+							"openehr": "$openehrRoot"
+						},
+						"manual": [
+							{
+								"name": "coding",
+								"fhir": [
+									{
+										"value": "85549003",
+										"path": "code"
+									},
+									{
+										"value": "http://snomed.info/sct",
+										"path": "system"
+									},
+									{
+										"value": "Korotkofftonen (waarneembare entiteit)",
+										"path": "display"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}
