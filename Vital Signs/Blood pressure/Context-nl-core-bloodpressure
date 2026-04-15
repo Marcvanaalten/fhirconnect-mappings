@@ -1,0 +1,19 @@
+grammar: FHIRConnect/v0.0.1
+type: context
+metadata:
+  name:  Vital Signs Bloodpressure
+  version: 0.1.0
+spec:
+  system: FHIR
+  version: R4
+context:
+  profile:
+    url: "http://nictiz.nl/fhir/StructureDefinition/nl-core-BloodPressure"
+    version: "0.11.0-beta.1"
+  template:
+    id: "Vital-Signs-Blood-Pressure"
+    sem_ver: "4.1.0"
+  archetypes:
+    - "openEHR-EHR-COMPOSITION.encounter.v1"
+    - "OBSERVATION.blood_pressure.v2"
+  start: "openEHR-EHR-COMPOSITION.encounter.v1"
