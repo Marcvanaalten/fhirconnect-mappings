@@ -13,6 +13,12 @@ spec:
 
 preprocessor:
   fhirConditions:
+
+    - targetRoot: "$resource"
+      targetAttribute: "category.coding"
+      operator: "one of"
+      criteria: "http://terminology.hl7.org/CodeSystem/observation-category"
+
     - targetRoot: "$resource"
       targetAttribute: code.coding.code
       operator: one of
@@ -66,12 +72,6 @@ mappings:
             value: "http://loinc.org"
           - path: "display"
             value: "Blood pressure panel with all children optional"
-
-  - name: "patient"
-    with:
-      fhir: "$resource.subject.reference"
-      openehr: "$openEhrContext.$ehr"
-      type: "STRING"
 
   - name: method
     with:
