@@ -19,6 +19,7 @@ preprocessor:
       criteria: 85354-9
 
 mappings:
+#this is for test purpose only
   - name: id
     with:
       fhir: "$resource"
@@ -29,6 +30,7 @@ mappings:
         fhir:
           - path: "id"
             value: "nl-core-BloodPressure-01"
+
 
   - name: meta
     with:
