@@ -132,9 +132,9 @@
             "code": {
               "coding": [
                 {
-                  "system": "http://loinc.org",
-                  "code": "8478-0",
-                  "display": "Mean blood pressure"
+                  "system": "http://snomed.info/sct",
+                  "code": "6797001",
+                  "display": "gemiddelde bloeddruk (waarneembare entiteit)"
                 }
               ]
             },

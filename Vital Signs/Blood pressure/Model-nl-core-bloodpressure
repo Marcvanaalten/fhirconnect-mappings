@@ -191,10 +191,10 @@ mappings:
 
   - name: averageBloodPressure
     with:
-      fhir: "resource.component"
+      fhir: "$resource.component"
       openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]"
     fhirCondition:
-      targetRoot: "resource.component"
+      targetRoot: "$resource.component"
       targetAttribute: "code.coding.code"
       operator: "one of"
       criteria: "6797001"
@@ -204,7 +204,6 @@ mappings:
           with:
             fhir: "value"
             openehr: "items[at1006]"
-            type: QUANTITY
         - name: "loincCode"
           with:
             fhir: "code.coding."
