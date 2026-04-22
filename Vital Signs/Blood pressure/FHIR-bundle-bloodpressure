@@ -169,9 +169,9 @@
             "code": {
               "coding": [
                 {
-                  "system": "http://loinc.org",
-                  "code": "8358-4",
-                  "display": "Blood pressure device Cuff size"
+                  "system": "http://snomed.info/sct",
+                  "code": "70665002",
+                  "display": "Blood pressure cuff"
                 }
               ]
             },
